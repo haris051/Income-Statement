@@ -1,3 +1,5 @@
+drop procedure if Exists PROC_INCOME_STATEMENT;
+DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `PROC_INCOME_STATEMENT`( P_ENTRY_DATE_FROM TEXT,
 										 P_ENTRY_DATE_TO TEXT,
 										 P_YEAR TEXT,
@@ -113,14 +115,14 @@ BEGIN
 						*, COUNT(*) OVER() AS TOTAL_ROWS
 			from (
 						select    
-								C.ACCOUNT_ID as id,
-								B.ACC_ID as ACC_ID,
-								B.DESCRIPTION,
-								SUM(A.Amount) as 'MONTH_AMT',
-								SUM(A.Amount)/IFNULL(@INCOMEAMOUNT,0) * 100 as 'PERCENTAGE',
-								SUM(B.Amount) as 'YEAR_AMT',
-								SUM(B.Amount)/IFNULL(@INCOMEAMOUNTYEARLY,0) * 100 as 'YEARLY_PERCENTAGE',
-								B.id as 'Account_Id',
+								C.ACCOUNT_ID as 'id',
+								B.ACC_ID as 'ACC_ID',
+								B.DESCRIPTION as 'DESCRIPTION',
+								IFNULL(SUM(A.Amount),0) as 'MONTH_AMT',
+								IFNULL(SUM(A.Amount)/IFNULL(@INCOMEAMOUNT,0) * 100,0) as 'PERCENTAGE',
+								IFNULL(SUM(B.Amount),0) as 'YEAR_AMT',
+								IFNULL(SUM(B.Amount)/IFNULL(@INCOMEAMOUNTYEARLY,0) * 100,0) as 'YEARLY_PERCENTAGE',
+								B.id as 'ACCOUNT_ID',
 								C.ACCOUNT_TYPE_NAME
 						from (			
 								select 	
@@ -243,27 +245,28 @@ BEGIN
                                 UNION ALL
 						   
 						SELECT 
-									'''' AS ID,
-									'''' AS ACC_ID,
+									'' AS ID,
+									'' AS ACC_ID,
 									CONCAT('GROSS PROFIT  :  ', IFNULL(@GROSSPROFIT, 0)) AS DESCRIPTION,
-									'''' AS MONTH_AMT,
-									'''' AS PERCENTAGE,
-									'''' AS YEAR_AMT,
-                                    '''' AS YEARLY_PERCENTAGE,
-                                    '''' AS ACCOUNT_ID,
-									'''' AS ACCOUNT_TYPE_NAME
+									'' AS MONTH_AMT,
+									'' AS PERCENTAGE,
+									'' AS YEAR_AMT,
+                                    '' AS YEARLY_PERCENTAGE,
+                                    '' AS ACCOUNT_ID,
+									'' AS ACCOUNT_TYPE_NAME
                                        
 							    UNION ALL
 						   
 						SELECT 
-									'''' AS ID,
-									'''' AS ACC_ID,
+									'' AS ID,
+									'' AS ACC_ID,
 									CONCAT('NET OPERATING INCOME  :  ', (IFNULL(@GROSSPROFIT, 0) - IFNULL(@EXPENSEAMOUNT, 0))) AS DESCRIPTION,
-									'''' AS MONTH_AMT ,
-									'''' AS PERCENTAGE,
-									'''' AS YEAR_AMT,
-                                    '''' AS YEARLY_PERCENTAGE,
-									'''' AS ACCOUNT_ID,
-                                    '''' AS ACCOUNT_TYPE_NAME)V;
+									'' AS MONTH_AMT ,
+									'' AS PERCENTAGE,
+									'' AS YEAR_AMT,
+                                    '' AS YEARLY_PERCENTAGE,
+									'' AS ACCOUNT_ID,
+                                    '' AS ACCOUNT_TYPE_NAME)V;
    
-END
+END $$
+DELIMITER ;
