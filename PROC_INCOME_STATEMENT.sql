@@ -194,7 +194,7 @@ BEGIN
 																end 
 													and  
 																case 
-																	when P_ENTRY_DATE_FROM <> "" then A.EntryDate >P_ENTRY_DATE_FROM 
+																	when P_ENTRY_DATE_FROM <> "" then A.EntryDate >CONCAT(P_YEAR, '-01-01') 
 																	else true 
 																end 
 													and 
