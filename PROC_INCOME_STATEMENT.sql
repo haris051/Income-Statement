@@ -199,7 +199,7 @@ BEGIN
 																end 
 													and 
 																case 
-																	when P_COMPANY_ID <> 1 then B.COMPANY_ID = P_COMPANY_ID 
+																	when P_COMPANY_ID <> "" then B.COMPANY_ID = P_COMPANY_ID 
 																	else true 
 																end
 													group by 
@@ -211,7 +211,7 @@ BEGIN
 													A.id = B.id 
 										where 
 													case 
-														when P_COMPANY_ID <> 1 then B.COMPANY_ID = P_COMPANY_ID 
+														when P_COMPANY_ID <> "" then B.COMPANY_ID = P_COMPANY_ID 
 														else true 
 													end
 									)B 
