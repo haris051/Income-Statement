@@ -28,7 +28,7 @@ BEGIN
 					where
 								case 
 									when 
-										P_ENTRY_DATE_FROM <> "" then A.EntryDate   >  P_ENTRY_DATE_FROM
+										P_ENTRY_DATE_FROM <> "" then A.EntryDate   >=  P_ENTRY_DATE_FROM
 									ELSE 
 									TRUE
 								END
@@ -36,7 +36,7 @@ BEGIN
 					and 
 								case 
 									when 
-										P_ENTRY_DATE_TO <> "" then A.EntryDate    <  P_ENTRY_DATE_TO
+										P_ENTRY_DATE_TO <> "" then A.EntryDate    <=  P_ENTRY_DATE_TO
 									ELSE 
 									TRUE
 								END		
@@ -86,14 +86,14 @@ BEGIN
 				where
 							case 
 								when 
-									P_YEAR <> "" then A.EntryDate   >  CONCAT(P_YEAR, '-01-01')
+									P_YEAR <> "" then A.EntryDate   >=  CONCAT(P_YEAR, '-01-01')
 								ELSE 
 								TRUE
 							END 
 				and 
 							case 
 								when 
-									P_ENTRY_DATE_TO <> "" then A.EntryDate    <  P_ENTRY_DATE_TO
+									P_ENTRY_DATE_TO <> "" then A.EntryDate    <=  P_ENTRY_DATE_TO
 								ELSE 
 								TRUE
 							END
@@ -143,12 +143,12 @@ BEGIN
 										where 
 												   case 
 														when 
-															 P_ENTRY_DATE_TO <> "" then A.ENTRYDATE < P_ENTRY_DATE_TO 
+															 P_ENTRY_DATE_TO <> "" then A.ENTRYDATE <= P_ENTRY_DATE_TO 
 														else true
 												   end
 										AND
 												   case 
-														when P_ENTRY_DATE_FROM <> "" then A.ENTRYDATE > P_ENTRY_DATE_FROM 
+														when P_ENTRY_DATE_FROM <> "" then A.ENTRYDATE >= P_ENTRY_DATE_FROM 
 														else true 
 												   end
 										and 
@@ -189,12 +189,12 @@ BEGIN
 																A.AccountId = B.id 
 													where 
 																case 
-																	when P_ENTRY_DATE_TO <> "" then  A.ENTRYDATE < P_ENTRY_DATE_TO 
+																	when P_ENTRY_DATE_TO <> "" then  A.ENTRYDATE <= P_ENTRY_DATE_TO 
 																	else true 
 																end 
 													and  
 																case 
-																	when P_ENTRY_DATE_FROM <> "" then A.EntryDate >CONCAT(P_YEAR, '-01-01') 
+																	when P_ENTRY_DATE_FROM <> "" then A.EntryDate >= CONCAT(P_YEAR, '-01-01') 
 																	else true 
 																end 
 													and 
