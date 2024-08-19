@@ -1,6 +1,6 @@
 drop procedure if Exists PROC_INCOME_STATEMENT;
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `PROC_INCOME_STATEMENT`( P_ENTRY_DATE_FROM TEXT,
+CREATE PROCEDURE `PROC_INCOME_STATEMENT`( P_ENTRY_DATE_FROM TEXT,
 										 P_ENTRY_DATE_TO TEXT,
 										 P_YEAR TEXT,
 										 P_COMPANY_ID INT )
@@ -118,22 +118,23 @@ BEGIN
 								C.ACCOUNT_ID as 'id',
 								B.ACC_ID as 'ACC_ID',
 								B.DESCRIPTION as 'DESCRIPTION',
-								IFNULL(SUM(A.Amount),0) as 'MONTH_AMT',
-								IFNULL(SUM(A.Amount)/IFNULL(@INCOMEAMOUNT,0) * 100,0) as 'PERCENTAGE',
-								IFNULL(SUM(B.Amount),0) as 'YEAR_AMT',
-								IFNULL(SUM(B.Amount)/IFNULL(@INCOMEAMOUNTYEARLY,0) * 100,0) as 'YEARLY_PERCENTAGE',
+								Round(IFNULL(SUM(A.Amount),0),2) as 'MONTH_AMT',
+								Round(IFNULL(SUM(A.Amount)/IFNULL(@INCOMEAMOUNT,0) *100,0),2) as 'PERCENTAGE',
+								Round(IFNULL(SUM(B.Amount),0),2) as 'YEAR_AMT',
+								Round(IFNULL(SUM(B.Amount)/IFNULL(@INCOMEAMOUNTYEARLY,0) * 100,0),2) as 'YEARLY_PERCENTAGE',
 								B.id as 'ACCOUNT_ID',
 								C.ACCOUNT_TYPE_NAME
 						from (			
 								select 	
-										IFNULL(A.BALANCE,0) AS Amount,
+										IFNULL(A.Balance,0) AS Amount,
 										B.id,
 										B.Description,
 										B.ACC_ID,
 										B.ACCOUNT_TYPE_ID 
 								from (
 										select 
-												   SUM(A.Balance) as Balance,B.id 
+												   SUM(A.Balance) as Balance,
+                                                   B.id 
 										from  
 												   Daily_Account_Balance A 
 										Right Join 
